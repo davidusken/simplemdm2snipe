@@ -9,7 +9,9 @@ username_attribute = username
 [snipe-it]
 url = https://your_snipe_instance.com
 apikey = snipe-api-key-here
-# timezone should match APP_TIMEZONE="timezone" in your Snipe-IT .env file 
+# Self Hosted: timezone should match APP_TIMEZONE="timezone" in your Snipe-IT .env file
+# Hosted: Use the name of the timezone you requested at sign up.
+#         Names can be found at https://www.php.net/manual/en/timezones.php
 timezone = America/Los_Angeles
 manufacturer_id = 1
 defaultStatus = 2
