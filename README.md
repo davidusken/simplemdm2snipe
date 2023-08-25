@@ -11,7 +11,7 @@ simplemdm2snipe is designed to sync assets between your SimpleMDM and Snipe-IT i
 
 When an asset is first created, it will fill out only the most basic information. If the asset already exists in your Snipe-IT inventory, the tool will sync the information you specify in the settings.conf file and make sure that the asset tag in SimpleMDM matches the asset tag in Snipe-IT, where Snipe-IT's asset tag for that device is considered the authority.
 
-If the asset tag field is blank in SimpleMDM when the record is being created in Snipe-IT, the script will create an asset tag with `KANDJI-$SERIAL_NUMBER` unless you enable `use_custom_pattern` in your `settings.conf` file.
+If the asset tag field is blank in SimpleMDM when the record is being created in Snipe-IT, the script will create an asset tag with `SIMPLEMDM-$SERIAL_NUMBER` unless you enable `use_custom_pattern` in your `settings.conf` file.
 
 ## Requirements:
 
@@ -77,7 +77,7 @@ export SNIPE_APIKEY=snipe-api-key-here
 
 
 **[asset-tag]**
-- **`use_custom_pattern`**: Set to **yes** to set your own patterns, if set to **no**, devices with no existing asset tag in SimpleMDM will default to `KANDJI-$SERIAL_NUMBER`.
+- **`use_custom_pattern`**: Set to **yes** to set your own patterns, if set to **no**, devices with no existing asset tag in SimpleMDM will default to `SIMPLEMDM-$SERIAL_NUMBER`.
 - `pattern_mac`: The pattern to use when creating new Macs in Snipe-IT that do not have an asset tag in SimpleMDM.
 - `pattern_iphone`: The pattern to use when creating new iPhones in Snipe-IT that do not have an asset tag in SimpleMDM.
 - `pattern_ipad`: The pattern to use when creating new iPads in Snipe-IT that do not have an asset tag in SimpleMDM.
@@ -126,7 +126,7 @@ optional arguments:
   -d, --debug             Sets logging to include additional DEBUG messages.
   --dryrun                This checks your config and tries to contact both the SimpleMDM and Snipe-IT instances, but exits before updating or syncing any assets.
   --version               Shows the version of this script and exits.
-  --auto_incrementing     You can use this if you have auto-incrementing enabled in your Snipe-IT instance to utilize that instead of using KANDJI-<SERIAL NUMBER> for the asset tag.
+  --auto_incrementing     You can use this if you have auto-incrementing enabled in your Snipe-IT instance to utilize that instead of using SIMPLEMDM-<SERIAL NUMBER> for the asset tag.
   --do_not_update_simplemdm  Does not update SimpleMDM with the asset tags stored in Snipe-IT.
   --do_not_verify_ssl     Skips SSL verification for all Snipe-IT requests. Helpful when you use self-signed certificate.
   -r, --ratelimited       Puts a half second delay between Snipe-IT API calls to adhere to the standard 120/minute rate limit
