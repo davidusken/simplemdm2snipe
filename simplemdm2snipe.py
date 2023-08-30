@@ -60,7 +60,7 @@ runtimeargs.add_argument("--dryrun", help="This checks your config and tries to 
 runtimeargs.add_argument("--version", help="Prints the version of this script and exits.", action="store_true")
 runtimeargs.add_argument("--auto_incrementing", help="You can use this if you have auto-incrementing enabled in your Snipe-IT instance to utilize that instead of using SIMPLEMDM-<SERIAL NUMBER> for the asset tag.", action="store_true")
 runtimeargs.add_argument("--do_not_update_simplemdm", help="Does not update SimpleMDM with the asset tags stored in Snipe-IT.", action="store_false")
-runtimeargs.add_argument('--do_not_verify_ssl', help="Skips SSL verification for all Snipe-IT requests. Helpful when you use self-signed certificate.", action="store_false")
+runtimeargs.add_argument("--do_not_verify_ssl", help="Skips SSL verification for all Snipe-IT requests. Helpful when you use self-signed certificate.", action="store_false")
 runtimeargs.add_argument("-r", "--ratelimited", help="Puts a half second delay between Snipe-IT API calls to adhere to the standard 120/minute rate limit", action="store_true")
 runtimeargs.add_argument("-f", "--force", help="Updates the Snipe-IT asset with information from SimpleMDM every time, despite what the timestamps indicate.", action="store_true")
 runtimeargs.add_argument("-u", "--users", help="Checks in/out assets based on the user assignment in SimpleMDM.", action="store_true")
@@ -481,10 +481,11 @@ def get_simplemdm_custom_attribute(device_id, attribute):
 # Function to update the asset tag of devices in SimpleMDM with an number passed from Snipe-IT.
 def update_simplemdm_asset_tag(simplemdm_id, asset_tag):
     endpoint=f"/api/v1/devices/{simplemdm_id}/custom_attribute_values"
-    payload = '{{"type": "custom_attribute_value", "id": "{}", "attributes: { "value: "{}"}}'.format(simplemdm_asset_tag_attribute, asset_tag)
-    logging.debug('Making PATCH request against: {}\n\tPayload for the request is: {}'.format(simplemdm_base + endpoint, payload))
-    response = simplemdm_api(method="PATCH", endpoint=endpoint,payload=payload)
-    return response['']
+    payload_dict = {"data": [{"name": simplemdm_asset_tag_attribute, "value": asset_tag}]}
+    payload = json.dumps(payload_dict)
+    logging.debug('Making PUT request against: {}\n\tPayload for the request is: {}'.format(simplemdm_base + endpoint, payload))
+    response = simplemdm_api(method="PUT", endpoint=endpoint,payload=payload)
+    return response
 
 # Function to lookup a Snipe-IT asset by serial number.
 def search_snipe_asset(serial):
