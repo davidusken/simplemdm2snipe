@@ -86,7 +86,10 @@ validarrays = [
         "users",
         "installed_profiles",
         "apple_business_manager",
-        "security_information"
+        "attributes",
+        "id",
+        "security_information",
+        "relationships"
 ]
 
 # Define Functions 
@@ -593,8 +596,12 @@ def create_snipe_model(payload):
     response = requests.post(api_url, headers=snipeheaders, json=payload, verify=user_args.do_not_verify_ssl, hooks={'response': request_handler})
     if response.status_code == 200:
         jsonresponse = response.json()
-        modelnumbers[jsonresponse['payload']['model_number']] = jsonresponse['payload']['id']
-        return True
+        if 'payload' in jsonresponse and jsonresponse['payload'] is not None:
+            modelnumbers[jsonresponse['payload']['model_number']] = jsonresponse['payload']['id']
+            return True
+        else:
+            logging.warning('The response did not contain the expected payload: {}'.format(jsonresponse))
+            return False
     else:
         logging.warning('Error code: {} while trying to create a new model.'.format(response.status_code))
         return False
